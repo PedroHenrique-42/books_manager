@@ -10,6 +10,9 @@ class RegisterBookPage extends StatefulWidget {
 class _RegisterBookPageState extends State<RegisterBookPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('List of Books')),
+      body: const Center(child: Text('This is the RegisterBookPage.')),
+    );
   }
 }
