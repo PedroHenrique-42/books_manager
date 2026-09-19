@@ -48,6 +48,22 @@ class BooksRepository {
     return _bookFromMap(rows.first);
   }
 
+  Future<int> insertBook(BookModel book) async {
+    final database = await _databaseInstance;
+    final values = <String, Object?>{
+      'title': book.title,
+      'description': book.description,
+      'author': book.author,
+      'image_url': book.imageUrl,
+    };
+
+    if (book.id != null) {
+      values['id'] = book.id;
+    }
+
+    return database.insert(_tableName, values);
+  }
+
   Future<void> deleteBook(int id) async {
     final database = await _databaseInstance;
     await database.delete(_tableName, where: 'id = ?', whereArgs: [id]);
