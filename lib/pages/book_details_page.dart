@@ -5,7 +5,7 @@ import '../controllers/book_details_controller.dart';
 class BookDetailsPage extends StatefulWidget {
   const BookDetailsPage({required this.bookId, super.key});
 
-  final int bookId;
+  final String bookId;
 
   @override
   State<BookDetailsPage> createState() => _BookDetailsPageState();

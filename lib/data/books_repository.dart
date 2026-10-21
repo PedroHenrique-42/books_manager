@@ -1,93 +1,11 @@
-import 'package:sqflite/sqflite.dart';
-
 import '../models/book_model.dart';
 
-class BooksRepository {
-  static const _databaseName = 'books.db';
-  static const _tableName = 'books';
+abstract class BooksRepository {
+  Future<List<BookModel>> listBooks();
 
-  Database? _database;
+  Future<BookModel?> getBook(String id);
 
-  Future<Database> get _databaseInstance async {
-    if (_database != null) {
-      return _database!;
-    }
+  Future<String> insertBook(BookModel book);
 
-    final databasePath = await getDatabasesPath();
-    _database = await openDatabase(
-      '$databasePath/$_databaseName',
-      version: 1,
-      onCreate: (database, version) async {
-        await _createBooksTable(database);
-      },
-    );
-
-    return _database!;
-  }
-
-  Future<List<BookModel>> listBooks() async {
-    final database = await _databaseInstance;
-    final rows = await database.query(_tableName, orderBy: 'title ASC');
-
-    return rows.map(_bookFromMap).toList();
-  }
-
-  Future<BookModel?> getBook(int id) async {
-    final database = await _databaseInstance;
-    final rows = await database.query(
-      _tableName,
-      where: 'id = ?',
-      whereArgs: [id],
-      limit: 1,
-    );
-
-    if (rows.isEmpty) {
-      return null;
-    }
-
-    return _bookFromMap(rows.first);
-  }
-
-  Future<int> insertBook(BookModel book) async {
-    final database = await _databaseInstance;
-    final values = <String, Object?>{
-      'title': book.title,
-      'description': book.description,
-      'author': book.author,
-      'image_url': book.imageUrl,
-    };
-
-    if (book.id != null) {
-      values['id'] = book.id;
-    }
-
-    return database.insert(_tableName, values);
-  }
-
-  Future<void> deleteBook(int id) async {
-    final database = await _databaseInstance;
-    await database.delete(_tableName, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<void> _createBooksTable(Database database) async {
-    await database.execute('''
-			CREATE TABLE $_tableName (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				title TEXT NOT NULL,
-				description TEXT NOT NULL,
-				author TEXT NOT NULL,
-				image_url TEXT NOT NULL
-			)
-		''');
-  }
-
-  BookModel _bookFromMap(Map<String, Object?> map) {
-    return BookModel(
-      id: map['id']! as int,
-      title: map['title']! as String,
-      description: map['description']! as String,
-      author: map['author']! as String,
-      imageUrl: map['image_url']! as String,
-    );
-  }
+  Future<void> deleteBook(String id);
 }

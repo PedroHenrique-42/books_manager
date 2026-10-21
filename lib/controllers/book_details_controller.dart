@@ -1,12 +1,13 @@
 import 'package:book_manager/data/books_repository.dart';
+import 'package:book_manager/data/firestore_books_repository.dart';
 import 'package:book_manager/models/book_model.dart';
 import 'package:flutter/foundation.dart';
 
 class BookDetailsController extends ChangeNotifier {
   BookDetailsController({required this.bookId, BooksRepository? repository})
-    : _booksRepository = repository ?? BooksRepository();
+    : _booksRepository = repository ?? FirestoreBooksRepository();
 
-  final int bookId;
+  final String bookId;
   final BooksRepository _booksRepository;
 
   BookModel? _book;

@@ -1,10 +1,11 @@
 import 'package:book_manager/data/books_repository.dart';
+import 'package:book_manager/data/firestore_books_repository.dart';
 import 'package:book_manager/models/book_model.dart';
 import 'package:flutter/foundation.dart';
 
 class RegisterBookController extends ChangeNotifier {
   RegisterBookController({BooksRepository? repository})
-    : _booksRepository = repository ?? BooksRepository();
+    : _booksRepository = repository ?? FirestoreBooksRepository();
 
   final BooksRepository _booksRepository;
 

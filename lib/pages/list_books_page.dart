@@ -37,7 +37,7 @@ class _ListBooksPageState extends State<ListBooksPage> {
     }
   }
 
-  Future<void> _openDetails(int bookId) async {
+  Future<void> _openDetails(String bookId) async {
     final deleted = await Navigator.push<bool>(
       context,
       MaterialPageRoute(builder: (_) => BookDetailsPage(bookId: bookId)),
